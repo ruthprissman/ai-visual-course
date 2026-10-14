@@ -1,0 +1,9 @@
+# font-maker - install once:
+#   python -m pip install --user -r requirements.txt
+fonttools>=4.38
+pillow>=9.1
+numpy>=1.22
+potracer>=0.0.4
+# Optional, not needed:
+#   opencv-python-headless   faster detection of the corner squares
+#   pymupdf                  reads scanned PDFs that are not plain JPEG pages
