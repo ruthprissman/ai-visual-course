@@ -1,10 +1,6 @@
 ---
 name: image-prompt
-description: >
-  Use when the user wants an image or wants to edit one: turns a short idea in Hebrew into a rich, professional
-  image brief, then creates the image. Also checks an image the user uploaded and fixes it with a precise edit.
-  השתמש כשכותבים "תמונה של...", "תכין לי תמונה", "פרומפט לתמונה", "רקע ל...", "איור של...", "תערוך את התמונה",
-  "תחליף רקע", "תשפר את התמונה", "תתאים את הסקיל אליי", "/image-prompt".
+description: Turns a short idea in Hebrew into a rich, professional image brief and creates the image, then checks and fixes it - also edits an uploaded image precisely. השתמש כשמבקשים תמונה, פרומפט לתמונה, רקע, איור או עריכה של תמונה.
 ---
 
 # פרומפט לתמונה (גרסת Gemini)
