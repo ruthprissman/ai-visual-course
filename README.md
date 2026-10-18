@@ -10,7 +10,9 @@
 | [`skill-builder`](skills/skill-builder/SKILL.md) | בונה סקיל חדש או משדרג סקיל קיים, ושומר אותו כסקיל פרטי שלך | 1 |
 | [`font-maker`](skills/font-maker/SKILL.md) | הופך דף כתב יד סרוק לפונט דומה, או מעצב פונט חדש בהשראת פונטים שאת אוהבת. כמה עוביים, ריווח אחיד ודף בדיקה | רשות |
 
-**ל-Gemini (חינם):** גרסה של `image-prompt` שמותאמת ל-Gemini, עם הוראות התקנה: [gemini/README.md](gemini/README.md).
+**ל-Gemini:** גרסה של `image-prompt` שמותאמת ל-Gemini, עם הוראות התקנה: [gemini/README.md](gemini/README.md).
+
+**מארז מתנה ל-Gemini:** חמישה סקילים לגרפיקאיות (הזמנות, לוגואים, צילומי מוצר, חפצים, וסקיל המותג שלך), עם דוגמאות: [gift-pack/README.md](gift-pack/README.md).
 
 ## איך מתקינים סקיל
 
