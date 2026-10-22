@@ -21,7 +21,7 @@ Pixabay (pixabay.com) הוא מאגר חינמי של צלילים ומוזיק�
    | גל, מעבר רך | `soft whoosh`, `swoosh transition`, `water swoosh` |
    | מילה או תגית נכנסת | `soft pop`, `bubble pop`, `ui click soft` |
    | הלוגו בסוף | `logo reveal soft`, `chime`, `sparkle` |
-   | רקע לכל הסרטון | מוזיקה: `calm corporate`, `light acoustic`, `elegant piano` |
+   | רקע לכל הסרטון | מוזיקה בלי שירה: `calm instrumental`, `light acoustic instrumental`, `elegant piano` |
 
 2. **מחפש בעצמי:** חיפוש באינטרנט, למשל `site:pixabay.com sound effects soft whoosh`, וקורא
    את דפי התוצאות. בוחר 2–3 אפשרויות לכל רגע בסטוריבורד.
@@ -52,5 +52,6 @@ Pixabay (pixabay.com) הוא מאגר חינמי של צלילים ומוזיק�
 
 ## כללים
 - **אף פעם** לא מוריד מוזיקה או צליל ממקום בלי רישיון ברור: לא מיוטיוב, לא משיר מוכר.
+- **מוזיקה: רק בלי שירה (instrumental).** מוסיף את המילה לכל חיפוש של מוזיקה, ובודק בדף שאין בה קול שר.
 - לא מייצר צלילים בקוד (`sine`, `anoisesrc` וכדומה) במקום צליל אמיתי.
 - אם אין צליל מתאים, הסרטון יוצא שקט. שקט עדיף על צליל זול.
