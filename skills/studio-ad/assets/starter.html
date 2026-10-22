@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width={{W}}, height={{H}}" />
+    <title>{{TITLE}}</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      {{FONT_FACES}}
+      :root {
+        /* מ-brand.md בלבד */
+        --bg: #ffffff;
+        --main: #1f466e;
+        --second: #469fbe;
+        --soft: #d1eef2;
+        --text: #1f466e;
+        --font-title: {{FONT_TITLE}};
+        --font-text: {{FONT_TEXT}};
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: {{W}}px; height: {{H}}px; overflow: hidden; background: var(--bg); }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        background: var(--bg); color: var(--text); font-family: var(--font-text);
+        direction: rtl; text-align: center;
+      }
+      .layer { position: absolute; inset: 0; }
+      .title { font-family: var(--font-title); font-weight: 700; text-wrap: balance; }
+      /* בס״ד בפינה הימנית העליונה, בכל הסרטון */
+      #bsd {
+        position: absolute; top: 3.2%; right: 4.5%; font-family: var(--font-text);
+        font-size: calc({{W}}px * 0.026); font-weight: 500; color: var(--text); opacity: 0.75;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="{{W}}" data-height="{{H}}">
+      <!-- כל קטע: class="clip" עם data-start, data-duration ו-data-track-index -->
+      <div id="s1" class="layer clip" data-start="0" data-duration="5" data-track-index="1">
+        <h1 id="s1-title" class="title" style="position:absolute; top:42%; width:100%; font-size:calc({{W}}px * 0.09);">כותרת</h1>
+      </div>
+      <div id="bsd" class="clip" data-start="0" data-duration="5" data-track-index="9">בס״ד</div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#s1-title", { y: 40, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.2);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
