@@ -68,5 +68,8 @@ execSync(`${HF} snapshot --at 0.5 --no-end -o snaps`, { cwd: work, stdio: "ignor
 const shot = fs.readdirSync(path.join(work, "snaps")).find((f) => f.startsWith("frame-"));
 const out = path.join(dir, "השוואת לוגו.png");
 fs.copyFileSync(path.join(work, "snaps", shot), out);
-fs.rmSync(work, { recursive: true, force: true });
+// On Windows the browser can hold the temp files a moment longer; a leftover temp folder is harmless.
+try {
+  fs.rmSync(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 300 });
+} catch {}
 console.log(`saved: ${out}`);

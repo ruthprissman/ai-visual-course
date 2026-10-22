@@ -40,12 +40,15 @@ winget install --id Gyan.FFmpeg -e --accept-source-agreements --accept-package-a
 
 ```
 npx --yes hyperframes@0.8.147 doctor
+npx --yes hyperframes@0.8.147 browser ensure
 ```
-בפעם הראשונה זה מוריד את HyperFrames ואת הדפדפן שהוא מצלם איתו (כמה דקות). אומר לה
-מראש שזה לוקח זמן, ושזה קורה רק פעם אחת.
+הראשונה מורידה את HyperFrames ובודקת את המחשב. השנייה מוצאת את הדפדפן שהוא מצלם איתו:
+אם יש במחשב Google Chrome, הוא משתמש בו, ולא מוריד כלום. אם אין, הוא מוריד דפדפן משלו
+(בערך 115MB, פעם אחת בלבד). אומר לה מראש שזה יכול לקחת כמה דקות.
 
-מה חשוב בתוצאה: FFmpeg ✓ ו-Chrome ✓. את השורות TTS, BGM ו-Docker מתעלמים מהן: הן
-לא נדרשות כאן, ולא מתקינים אותן.
+מה חשוב בתוצאה: FFmpeg ✓ ו-Chrome ✓ ב-doctor, ו-"Ready to render" ב-browser ensure. את
+השורות TTS, BGM, whisper ו-Docker מתעלמים מהן: הן לא נדרשות כאן, ולא מתקינים אותן.
+Edge לא מתאים כאן: HyperFrames צריך Chrome.
 
 ## 4. התיקייה
 
@@ -76,3 +79,4 @@ cd "פרויקטים/בדיקה" && npx --yes hyperframes@0.8.147 render -o "../
 - הבנייה נכשלת עם `ERR_TUNNEL_CONNECTION_FAILED` או קובץ שלא נטען: משהו בדף נטען מהרשת.
   בודק שכל קובץ (GSAP, גופנים, תמונות) נמצא בתוך `assets/` של הפרויקט.
 - הבנייה נתקעת: סוגר תהליכי Chrome תקועים, ומריץ שוב עם `--workers 1`.
+- "Chrome cannot start" או הורדה של הדפדפן שנכשלה באמצע: `npx --yes hyperframes@0.8.147 browser ensure --force`.
