@@ -13,6 +13,10 @@
 | [`image-prompt`](skills/image-prompt/SKILL.md) | הופך רעיון קצר לפרומפט עשיר ל-ChatGPT, בודק את התמונה שהתקבלה, ומתאים את עצמו לסגנון שלך | 1 |
 | [`skill-builder`](skills/skill-builder/SKILL.md) | בונה סקיל חדש או משדרג סקיל קיים, ושומר אותו כסקיל פרטי שלך | 1 |
 | [`studio-ad`](skills/studio-ad/SKILL.md) | פרסומת וידאו לסטודיו שלך: מנקה את הלוגו ומשרטט אותו מחדש, מראיין אותך על המותג, מציע סוגי פרסומות ולוח של 3 כיוונים, ובונה אחרי שאישרת סטוריבורד. עם הקונקטור של ElevenLabs: צליל, מוזיקה בלי שירה ותמונות רקע. [להורדה כ-ZIP](zips/studio-ad.zip) | 2–3 |
+| [`video-insights`](skills/video-insights/SKILL.md) | צופה בסרטון ומנתח אותו: פרקים, פתיחה, רגעים חזקים, מה לקצץ וכותרות, בדף שבו כל זמן מקפיץ את הסרטון. [להורדה כ-ZIP](zips/video-insights.zip) | 4 |
+| [`video-captions`](skills/video-captions/SKILL.md) | כתוביות בעברית: תמלול, בדיקת מילים, לוח של 3 סגנונות, צריבה לסרטון וקובץ SRT. [להורדה כ-ZIP](zips/video-captions.zip) | 4 |
+| [`video-cut`](skills/video-cut/SKILL.md) | עריכה במילים: מוריד חלקים, שתיקות ו"אה", מוציא סרטונים קצרים, אנכי לסטטוס, ולוגו בסוף. [להורדה כ-ZIP](zips/video-cut.zip) | 4 |
+| [`studio-voice`](skills/studio-voice/SKILL.md) | קריינות בעברית בקול של Google, עם מפתח API משלך: ראיון, טקסט באורך הנכון, 3 קולות לבחירה, וחיבור לסרטון. [להורדה כ-ZIP](zips/studio-voice.zip) | בונוס לשיעור 3 |
 | [`font-maker`](skills/font-maker/SKILL.md) | הופך דף כתב יד סרוק לפונט דומה, או מעצב פונט חדש בהשראת פונטים שאת אוהבת. כמה עוביים, ריווח אחיד ודף בדיקה | רשות |
 
 **ל-Gemini:** גרסה של `image-prompt` שמותאמת ל-Gemini, עם הוראות התקנה: [gemini/README.md](gemini/README.md).
