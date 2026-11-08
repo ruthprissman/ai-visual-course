@@ -102,7 +102,7 @@ const tips = [];
 if (audio?.loudnessLUFS != null && audio.loudnessLUFS < -24) tips.push("הצליל שקט מהרגיל");
 if (audio?.loudnessLUFS != null && audio.loudnessLUFS > -10) tips.push("הצליל חזק מאוד");
 if (audio?.peakDBFS != null && audio.peakDBFS > -0.5) tips.push("יש רגעים שהצליל נשרף (מגיע לתקרה)");
-if (info.hdr) tips.push("סרטון HDR מטלפון: בעריכה הצבעים יומרו לרגילים");
+if (info.hdr) tips.push("סרטון HDR (צבעים מורחבים): בעריכה הצבעים יומרו לרגילים");
 console.log(JSON.stringify({
   ok: true,
   dir: work,

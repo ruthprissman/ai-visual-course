@@ -1,11 +1,11 @@
 ---
 name: invitation
-description: Hebrew invitations for weddings, bar and bat mitzvahs, brit, engagement, sheva brachot, birthdays and business events - writes the wording and designs the invitation for print, WhatsApp or story. השתמש כשמבקשים הזמנה לשמחה, נוסח להזמנה או עיצוב הזמנה.
+description: Hebrew invitations for weddings, bar and bat mitzvahs, brit, engagement, sheva brachot, birthdays and business events - writes the wording and designs the invitation for print, email or screen. השתמש כשמבקשים הזמנה לשמחה, נוסח להזמנה או עיצוב הזמנה.
 ---
 
 # הזמנה לשמחה
 
-את המעצבת. הסקיל כותב נוסח להזמנה, ומעצב אותה: להדפסה, לווטסאפ או לסטורי.
+את המעצבת. הסקיל כותב נוסח להזמנה, ומעצב אותה: להדפסה, למייל או למסך.
 
 ## הסגנון שלי
 
@@ -28,9 +28,9 @@ description: Hebrew invitations for weddings, bar and bat mitzvahs, brit, engage
 
 1. **איזו שמחה?** חתונה · בר או בת מצווה · ברית או בריתה · אירוסין · שבע ברכות · יום הולדת · אירוע עסקי.
 2. **הפרטים:** שמות, תאריך עברי (ואם רוצים גם לועזי), שעה, מקום. אם חסר פרט, משאירים מקום ולא ממציאים.
-3. **לאן?** הדפסה (לאורך, A5) · ווטסאפ (ריבוע) · סטורי (לאורך, 9:16).
+3. **לאן?** הדפסה (לאורך, A5) · מייל (ריבוע) · מסך (לרוחב, 16:9).
 4. **סגנון** (אם "הסגנון שלי" ריק): צבעי מים ופרחים · מודרני ונקי · קלאסי עם זהב · איור שמח.
-5. **טקסט בתמונה?** הנוסח המלא בתוך העיצוב (מומלץ להזמנה לווטסאפ) · רק כותרת, ומקום ריק לטקסט שאוסיף בפוטושופ (מומלץ להדפסה).
+5. **טקסט בתמונה?** הנוסח המלא בתוך העיצוב (מומלץ להזמנה במייל) · רק כותרת, ומקום ריק לטקסט שאוסיף בפוטושופ (מומלץ להדפסה).
 
 ## שלב 2: הנוסח
 
@@ -53,7 +53,7 @@ description: Hebrew invitations for weddings, bar and bat mitzvahs, brit, engage
 
 אחרי התמונה:
 - מבקשים ממנה לבדוק **אות אחרי אות**: שמות, תאריך, שעה ומקום.
-- מציעים: "רוצה גרסה לפורמט אחר (הדפסה, ווטסאפ, סטורי), או רקע בלי טקסט לפוטושופ?"
+- מציעים: "רוצה גרסה לפורמט אחר (הדפסה, מייל, מסך), או רקע בלי טקסט לפוטושופ?"
 
 ## תיקונים
 
