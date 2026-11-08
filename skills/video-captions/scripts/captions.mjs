@@ -7,7 +7,7 @@
 //   node captions.mjs srt --transcript "<t.json>" --style "<s.json>" --out "<x.srt>"
 //   node captions.mjs burn --video "<v>" --transcript "<t.json>" --style "<s.json>" --out "<o.mp4>"
 //
-// A style file holds only what differs from its preset. Presets: "status", "classic", "podcast".
+// A style file holds only what differs from its preset. Presets: "words", "classic", "podcast".
 
 import fs from "node:fs";
 import path from "node:path";
@@ -20,10 +20,11 @@ const FILLERS = new Set(["אה", "אהה", "אההה", "אמ", "אממ", "אממ
 
 // Sizes are in percent of the short side of the video, margins in percent of its height.
 const PRESETS = {
-  status: { font: "Heebo", bold: true, size: 8.5, color: "#FFFFFF", highlight: "#FFD84D", background: "outline", backColor: "#000000", backOpacity: 0.9, position: "bottom", margin: 24, maxWords: 3, maxChars: 18, lines: 1 },
+  words: { font: "Heebo", bold: true, size: 8.5, color: "#FFFFFF", highlight: "#FFD84D", background: "outline", backColor: "#000000", backOpacity: 0.9, position: "bottom", margin: 24, maxWords: 3, maxChars: 18, lines: 1 },
   classic: { font: "Heebo", bold: true, size: 4.8, color: "#FFFFFF", highlight: null, background: "box", backColor: "#000000", backOpacity: 0.6, position: "bottom", margin: 7, maxWords: 0, maxChars: 40, lines: 1 },
   podcast: { font: "Heebo", bold: false, size: 4.4, color: "#FFFFFF", highlight: null, background: "box", backColor: "#000000", backOpacity: 0.7, position: "bottom", margin: 6, maxWords: 0, maxChars: 76, lines: 2 },
 };
+PRESETS.status = PRESETS.words; // older style files
 // Hebrew fonts from Google Fonts that are known to work. Any other Google font name works too.
 const FONTS = ["Heebo", "Assistant", "Rubik", "Secular One", "Suez One", "Varela Round", "Karantina", "Noto Sans Hebrew", "Frank Ruhl Libre", "Alef"];
 
@@ -33,7 +34,7 @@ if (!command) fail("צריך פקודה: preview, fix, srt או burn.");
 function loadStyle(file, info) {
   const own = file ? JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")) : {};
   const preset = PRESETS[own.preset || opt("preset", "classic")];
-  if (!preset) fail(`אין סגנון בשם "${own.preset}". יש status, classic, podcast.`);
+  if (!preset) fail(`אין סגנון בשם "${own.preset}". יש words, classic, podcast.`);
   const style = { ...preset, ...own };
   // A narrow (vertical) video fits fewer letters in a line.
   if (info?.vertical && !own.maxChars) style.maxChars = Math.round(style.maxChars * (own.preset === "podcast" ? 0.45 : 0.62));
