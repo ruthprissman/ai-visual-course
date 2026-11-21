@@ -66,6 +66,7 @@ argument-hint: "[לוח / ניתוח / עבודה / סדרה / הדפסה]"
 |---|---|---|
 | Node.js | `node -v` (18 ומעלה) | מציע להתקין, באישור: `winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements` |
 | Chrome או Edge | הסקריפטים מוצאים לבד | Edge מגיע עם Windows. אם אין אף אחד, אומרים לה. |
+| Python, רק לאות או מילה בתוך SVG | `python -c "import fontTools, brotli"` | מתקין בעצמו, ואומר לה במשפט מה מותקן: `references/build.md`, "אות ומילה ב-SVG" |
 
 אין עוד התקנות. 14 גופנים עבריים חופשיים כבר בתוך הסקיל (`assets/fonts`):
 Heebo, Assistant, Rubik, Noto Sans Hebrew, Varela Round, Frank Ruhl Libre, David Libre,
@@ -96,6 +97,7 @@ node <תיקיית הסקיל>/scripts/board.mjs images --labels "רך,גאומ�
 node <תיקיית הסקיל>/scripts/new-piece.mjs "<שם>" --size 1920x1080
 node <תיקיית הסקיל>/scripts/new-piece.mjs "<שם>" --print 148x210 --bleed 3 --marks
 node <תיקיית הסקיל>/scripts/render.mjs "פרויקטים/<שם>" [--check] [--scale 2]
+python <תיקיית הסקיל>/scripts/text-to-path.py --font heebo --weight 600 --text "ת" --size 40 --fill "#B38C36" --id gold-tav --out "פרויקטים/<שם>/ת.svg"
 ```
 
 - **`board.mjs languages`:** לוח השפות בצבעים שלה, מתוך `brand.md`. בלי סינון יוצאים שני לוחות
@@ -108,6 +110,8 @@ node <תיקיית הסקיל>/scripts/render.mjs "פרויקטים/<שם>" [--c
   - עבודה להדפסה: PDF עם גלישה (וסימני חיתוך אם ביקשה), ותצוגה ב-300 DPI.
   - כל קובץ SVG שבתיקייה מועתק גם הוא.
   - עם `--check` יוצאת רק תצוגה קטנה לבדיקה שלי.
+- **`text-to-path.py`:** אות, מילה או שורה קצרה, כצורות מהגופן שבסקיל. לקובץ SVG לאילוסטרייטור:
+  לא צריך גופן מותקן, והאות נראית בדיוק כמו בגופן.
 - **`styles.mjs`:** 48 הדוגמאות. כל אחת היא גם המתכון של השפה.
 
 ## כללים
