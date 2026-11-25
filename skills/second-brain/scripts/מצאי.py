@@ -15,6 +15,10 @@
   מוסיף לרשימת השמות את העמודה הזאת, בלי להדפיס אף שם. כך ממלאים את הרשימה מרשימת אנשי קשר או הזמנות.
 - python _כלים/מצאי.py --columns "מקורות/<גיליון>.xlsx" "מוצר,ספק,זמן אספקה"
   מחלץ רק את העמודות האלה ל"30_ספרייה/עמודות/". לקובץ שיש בו גם מידע לעבודה וגם עלויות או טלפונים.
+- python _כלים/מצאי.py --names-from-email "מקורות/<מייל>.eml" [עוד מיילים]
+  מוסיף לרשימת השמות את השמות מכותרות המיילים, בלי להדפיס. השמות של המקור ושל מי שמקלידה לא נכנסים.
+- python _כלים/מצאי.py --mask-file "<תמלול גולמי>" "30_ספרייה/תמלולים/<id> <שם>.md"
+  עותק נקי של תמלול: שמות מהרשימה, מיילים ומספרי בנק מוסתרים. בלי להקליד שם בפקודה.
 - נותן לכל קובץ מספר בן שלוש ספרות (001). המספר לא משתנה: קובץ שעבר תיקייה או שינה שם נשאר עם המספר שלו
   (לפי טביעת האצבע, md5), וקובץ שנערך באותו מקום נשאר עם המספר שלו (לפי הנתיב). מספר שניתן לא עובר לקובץ אחר.
 - שני קבצים זהים: אחד מקבל את הטקסט, והשני מסומן "כפיל", עם המספר של הראשון ב"כפיל_של".
@@ -44,6 +48,7 @@ import fnmatch
 import hashlib
 import html
 import io
+import json
 import logging
 import os
 import posixpath
@@ -1029,25 +1034,75 @@ def names_from(rel, header):
     if col is None:
         print(f'לא נמצאה עמודה שהכותרת שלה כוללת "{header}". שורת הכותרות: ' + header_hint(rows))
         sys.exit(1)
-    existing = set()
-    if os.path.exists(NAMES_FILE):
-        with open(NAMES_FILE, encoding="utf-8-sig") as f:
-            existing = {l.strip() for l in f if l.strip() and not l.startswith("#")}
-    new = []
-    for row in rows[start:]:
-        v = (row[col] if col < len(row) else "") or ""
-        v = re.sub(r"\s+", " ", v).strip()
-        if v and not _contactish(v) and v not in existing and v not in new:
-            new.append(v)
-    os.makedirs(os.path.dirname(NAMES_FILE), exist_ok=True)
-    with open(NAMES_FILE, "a", encoding="utf-8") as f:
-        for v in new:
-            f.write(v + "\n")
-    print(f"נוספו {count_he(len(new))} לרשימת השמות (מקורות/_רגיש/שמות.txt). השמות עצמם לא הודפסו.")
+    values = [(row[col] if col < len(row) else "") or "" for row in rows[start:]]
+    n = add_names(values)
+    print(("נוסף שם אחד" if n == 1 else f"נוספו {count_he(n)}") + " לרשימת השמות (מקורות/_רגיש/שמות.txt). השמות עצמם לא הודפסו.")
 
 
 def count_he(n):
     return "שם אחד" if n == 1 else f"{n} שמות"
+
+
+def own_names():
+    """המקור ומי שמקלידה, מ"_כלים/הגדרות.json". השמות שלהן לא נכנסים לרשימת השמות הרגישים."""
+    try:
+        with open(os.path.join(HERE, "הגדרות.json"), encoding="utf-8-sig") as f:
+            s = json.load(f)
+        return {w for k in ("decider", "operator") for w in str(s.get(k, "")).split() if w}
+    except (OSError, ValueError):
+        return set()
+
+
+def add_names(new):
+    """מוסיף שמות לרשימה, בלי כפילויות ובלי להדפיס אותם. מחזיר כמה נוספו."""
+    existing = set()
+    if os.path.exists(NAMES_FILE):
+        with open(NAMES_FILE, encoding="utf-8-sig") as f:
+            existing = {l.strip() for l in f if l.strip() and not l.startswith("#")}
+    mine = own_names()
+    added = []
+    for v in new:
+        v = re.sub(r"\s+", " ", v).strip().strip('"\'')
+        if not v or v in existing or v in added or _contactish(v) or set(v.split()) & mine:
+            continue
+        added.append(v)
+    os.makedirs(os.path.dirname(NAMES_FILE), exist_ok=True)
+    with open(NAMES_FILE, "a", encoding="utf-8") as f:
+        for v in added:
+            f.write(v + "\n")
+    return len(added)
+
+
+def names_from_email(paths):
+    """מוסיף לרשימת השמות את השמות שבכותרות של מיילים (מאת, אל, עותק), בלי להדפיס.
+    השמות של המקור ושל מי שמקלידה (מההגדרות) לא נכנסים."""
+    from email.utils import getaddresses
+    found = []
+    for rel in paths:
+        path = os.path.join(BRAIN, rel) if not os.path.isabs(rel) else rel
+        if not os.path.isfile(path) or not path.lower().endswith(".eml"):
+            print(f"לא נמצא מייל (eml) בנתיב: {rel}")
+            continue
+        msg = read_eml(path)
+        heads = [_header(msg.get(h)) for h in ("From", "To", "Cc", "Reply-To") if msg.get(h)]
+        for name, _addr in getaddresses(heads):
+            if name and re.search(r"[א-תA-Za-z]", name):
+                found.append(name)
+    n = add_names(found)
+    print(("נוסף שם אחד" if n == 1 else f"נוספו {count_he(n)}") + " לרשימת השמות (מקורות/_רגיש/שמות.txt). השמות עצמם לא הודפסו.")
+
+
+def mask_file(src, dst):
+    """כותב עותק של קובץ טקסט שבו כל שם מהרשימה הוא [שם], וכל מייל ומספר בנק מוסתרים.
+    כך מכינים עותק נקי של תמלול, בלי להקליד שם בפקודה."""
+    src_p = os.path.join(BRAIN, src) if not os.path.isabs(src) else src
+    dst_p = os.path.join(BRAIN, dst) if not os.path.isabs(dst) else dst
+    with open(src_p, encoding="utf-8-sig") as f:
+        text = f.read()
+    os.makedirs(os.path.dirname(dst_p), exist_ok=True)
+    with open(dst_p, "w", encoding="utf-8") as f:
+        f.write(redact(text))
+    print(f"נכתב עותק נקי: {os.path.relpath(dst_p, BRAIN)}")
 
 
 COLUMNS_DIR = os.path.join(LIB, "עמודות")
@@ -1106,7 +1161,17 @@ def main():
                     help='מוסיף לרשימת השמות את העמודה הזאת מגיליון, בלי להדפיס. למשל: --names-from "מקורות/הזמנות.xlsx" "שם"')
     ap.add_argument("--columns", nargs=2, metavar=("גיליון", "עמודות"),
                     help='מחלץ רק את העמודות האלה מגיליון, בלי להדפיס. למשל: --columns "מקורות/ספקים.xlsx" "מוצר,ספק,זמן אספקה"')
+    ap.add_argument("--names-from-email", nargs="+", metavar="מייל",
+                    help="מוסיף לרשימת השמות את השמות מכותרות המיילים (מאת, אל, עותק), בלי להדפיס")
+    ap.add_argument("--mask-file", nargs=2, metavar=("מקור", "יעד"),
+                    help="עותק נקי של קובץ טקסט: שמות מהרשימה, מיילים ומספרי בנק מוסתרים. לתמלול")
     args = ap.parse_args()
+    if args.names_from_email:
+        names_from_email(args.names_from_email)
+        return
+    if args.mask_file:
+        mask_file(*args.mask_file)
+        return
     if args.names_from:
         names_from(*args.names_from)
         return
