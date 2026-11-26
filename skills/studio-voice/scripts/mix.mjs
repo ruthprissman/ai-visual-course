@@ -52,10 +52,15 @@ const hold = over > 0.05 ? over + 0.4 : 0;
 const vo = `[1:a]aresample=48000,aformat=channel_layouts=stereo,adelay=${delay}:all=1,apad[vo]`;
 const filters = [];
 if (hasAudio) {
-  // The voice pushes the sounds under it (sidechain), and they come back as soon as it stops.
-  filters.push(`[0:a]aresample=48000,aformat=channel_layouts=stereo,apad[bed]`, vo, `[vo]asplit=2[key][say]`);
-  filters.push(`[bed][key]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=400[duck]`);
-  filters.push(`[duck][say]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`);
+  // One steady dip under the whole narration: the sounds go down 0.6 s before the voice, stay low
+  // (about -14 dB) through every pause between sentences, and come back over 1 s after the voice ends.
+  // A sidechain here let the music jump back to full volume in each short pause.
+  const LOW = 0.2, down0 = Math.max(0, at - 0.6), down1 = at, up0 = at + voiceSeconds, up1 = up0 + 1;
+  const ramp = (a, b, from, to) => (b - a < 0.01 ? `${to}` : `${from}+(${to - from})*(t-${a.toFixed(3)})/${(b - a).toFixed(3)}`);
+  const gain = `if(lt(t,${down0.toFixed(3)}),1,if(lt(t,${down1.toFixed(3)}),${ramp(down0, down1, 1, LOW)},` +
+    `if(lt(t,${up0.toFixed(3)}),${LOW},if(lt(t,${up1.toFixed(3)}),${ramp(up0, up1, LOW, 1)},1))))`;
+  filters.push(`[0:a]aresample=48000,aformat=channel_layouts=stereo,apad,volume='${gain}':eval=frame[duck]`, vo);
+  filters.push(`[duck][vo]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`);
 } else {
   filters.push(vo.replace("[vo]", "[a]"));
 }

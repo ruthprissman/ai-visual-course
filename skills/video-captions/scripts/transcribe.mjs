@@ -197,6 +197,18 @@ async function google(file) {
   }
 }
 
+// FFmpeg writes one line per sentence, {"start":0,"end":1860,"text":"..."}, but leaves quotes inside the
+// text as they are. Hebrew abbreviations (ט"ו, ד"ר, בע"מ) then break JSON.parse, so the fields are read by position.
+function readSegment(line) {
+  try {
+    return JSON.parse(line);
+  } catch {
+    const m = line.match(/^\s*\{\s*"start"\s*:\s*(-?[\d.]+)\s*,\s*"end"\s*:\s*(-?[\d.]+)\s*,\s*"text"\s*:\s*"([\s\S]*)"\s*\}\s*,?\s*$/);
+    if (!m) fail(`התמלול במחשב החזיר שורה שאי אפשר לקרוא: ${line.slice(0, 200)}`);
+    return { start: Number(m[1]), end: Number(m[2]), text: m[3].replace(/\\(["\\/])/g, "$1") };
+  }
+}
+
 // ---- on the computer: FFmpeg's built-in Whisper with ivrit-ai's Hebrew model
 async function local(file) {
   if (!hasWhisper()) fail("ה-FFmpeg במחשב הזה בלי Whisper (צריך FFmpeg 8 ומעלה, בגרסה המלאה). ב-Windows: winget install --id Gyan.FFmpeg -e. אחרת מתמללות ב-ElevenLabs.");
@@ -209,7 +221,7 @@ async function local(file) {
     const r = run("ffmpeg", ["-hide_banner", "-nostdin", "-loglevel", "error", "-i", path.resolve(file), "-af", `whisper=model=${LOCAL.model.file}:language=he:queue=5:destination=${out}:format=json:vad_model=${LOCAL.vad.file}`, "-f", "null", "-"], { cwd: MODEL_DIR });
     const outPath = path.join(MODEL_DIR, out);
     if (!r.ok || !fs.existsSync(outPath)) fail(`התמלול במחשב נכשל. ${r.err.slice(-400)}`);
-    const segments = fs.readFileSync(outPath, "utf8").split(/\r?\n/).filter(Boolean).map((l) => JSON.parse(l));
+    const segments = fs.readFileSync(outPath, "utf8").split(/\r?\n/).filter(Boolean).map(readSegment);
     // Whisper gives a time for each short sentence. Inside it, every word gets a share by its length.
     const words = [];
     segments.forEach((seg, g) => {
